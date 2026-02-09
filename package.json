@@ -118,9 +118,16 @@
     "publish": "vsce publish"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.19.33",
     "@types/vscode": "^1.90.0",
-    "@types/node": "^20.11.30",
-    "typescript": "^5.4.5"
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.2",
+    "glob": "^10.5.0",
+    "mocha": "^11.7.5",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.55.0"
   }
 }
