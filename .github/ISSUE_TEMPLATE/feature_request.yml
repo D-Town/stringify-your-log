@@ -1,0 +1,64 @@
+.github/PULL_REQUEST_TEMPLATE.mdname: ✨ Feature Request
+description: Suggest a new feature or improvement
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees:
+  - D-Town
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your feature suggestion! We appreciate new ideas.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Use Case
+      description: What problem would this feature solve?
+      placeholder: |
+        When debugging complex objects it would be helpful if...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: What could the feature look like?
+      placeholder: |
+        An additional shortcut that...
+        Or a new configuration option for...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Have you considered other approaches?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority (from your perspective)
+      options:
+        - Nice to have
+        - Would help me
+        - Very important for my workflow
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Screenshots, mockups, examples from other extensions
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched for similar feature requests
+          required: true

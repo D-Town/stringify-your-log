@@ -1,0 +1,133 @@
+{
+  "name": "stringify-your-log",
+  "displayName": "Stringify Your Log",
+  "description": "Insert pretty debug logs for JavaScript/TypeScript (JSON.stringify or console.dir) with smart placement after blocks.",
+  "version": "0.0.0",
+  "publisher": "dtown",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/D-Town/stringify-your-log"
+  },
+  "bugs": {
+    "url": "https://github.com/D-Town/stringify-your-log/issues"
+  },
+  "homepage": "https://github.com/D-Town/stringify-your-log#readme",
+  "qna": "marketplace",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "keywords": [
+    "logging",
+    "console",
+    "debug",
+    "javascript",
+    "typescript",
+    "jsx",
+    "tsx",
+    "pretty print",
+    "json stringify",
+    "console.dir"
+  ],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "categories": [
+    "Other"
+  ],
+  "icon": "icon.png",
+  "activationEvents": [],
+  "badges": [
+    {
+      "url": "https://img.shields.io/github/v/release/D-Town/stringify-your-log",
+      "href": "https://github.com/D-Town/stringify-your-log/releases",
+      "description": "Latest Release"
+    },
+    {
+      "url": "https://img.shields.io/github/issues/D-Town/stringify-your-log",
+      "href": "https://github.com/D-Town/stringify-your-log/issues",
+      "description": "Open Issues"
+    }
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "stringify-your-log.logJson",
+        "title": "Stringify Your Log: Insert pretty log"
+      },
+      {
+        "command": "stringify-your-log.logJsonFull",
+        "title": "Stringify Your Log: Insert pretty log (Full)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "stringify-your-log.logJson",
+        "key": "cmd+alt+l",
+        "when": "editorTextFocus && (editorLangId == javascript || editorLangId == typescript || editorLangId == javascriptreact || editorLangId == typescriptreact)"
+      },
+      {
+        "command": "stringify-your-log.logJsonFull",
+        "key": "cmd+alt+shift+l",
+        "when": "editorTextFocus && (editorLangId == javascript || editorLangId == typescript || editorLangId == javascriptreact || editorLangId == typescriptreact)"
+      }
+    ],
+    "configuration": {
+      "title": "Stringify Your Log",
+      "properties": {
+        "stringifyYourLog.outputMode": {
+          "type": "string",
+          "enum": [
+            "stringify",
+            "dir"
+          ],
+          "default": "stringify",
+          "description": "Choose log output: JSON.stringify (pretty JSON string) or console.dir (interactive object view, Node can colorize)."
+        },
+        "stringifyYourLog.dirDepth": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null,
+          "description": "Depth for console.dir. null means unlimited depth."
+        },
+        "stringifyYourLog.dirColors": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable colors for console.dir output (Node/terminal dependent)."
+        },
+        "stringifyYourLog.smartPlacement": {
+          "type": "boolean",
+          "default": true,
+          "description": "Try to insert the log after the enclosing block (e.g., after a map/forEach callback block) instead of at the cursor."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "pretest": "npm run compile && npm run lint",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.19.33",
+    "@types/vscode": "^1.90.0",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.2",
+    "glob": "^10.5.0",
+    "mocha": "^11.7.5",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.55.0"
+  }
+}
