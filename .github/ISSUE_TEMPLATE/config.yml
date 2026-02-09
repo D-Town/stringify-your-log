@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Questions & Discussions
+    url: https://github.com/D-Town/vscode-pretty-log-js-ts/discussions
+    about: Ask questions or discuss about the extension
+  - name: 📚 Documentation
+    url: https://github.com/D-Town/vscode-pretty-log-js-ts#readme
+    about: Read the full documentation
