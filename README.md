@@ -201,3 +201,4 @@ Add the following to your **VS Code `settings.json`**:
 
 * **smartPlacement: `true`**
   Inserts logs *after* the current enclosing block (for example after `map`, `forEach`, `if`, `try` blocks) instead of inside them.
+
