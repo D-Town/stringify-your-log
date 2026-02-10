@@ -5,6 +5,13 @@ All notable changes to the "stringify-your-log" extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2](https://github.com/D-Town/stringify-your-log/compare/v1.0.1...v1.0.2) (2026-02-10)
+
+
+### Bug Fixes
+
+* Maintenance ([#6](https://github.com/D-Town/stringify-your-log/issues/6)) ([f1a2a47](https://github.com/D-Town/stringify-your-log/commit/f1a2a471b543450f196572a175db7e557cc292ec))
+
 ## [1.0.1](https://github.com/D-Town/stringify-your-log/compare/v1.0.0...v1.0.1) (2026-02-10)
 
 
