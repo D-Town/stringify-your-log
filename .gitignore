@@ -24,3 +24,4 @@ Thumbs.db
 
 # Release artifacts
 *.vsix
+.vscode-test
