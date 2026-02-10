@@ -33,8 +33,8 @@ This extension is designed for backend workflows where you want predictable outp
 
 ### Default Keybindings (macOS)
 
-- `cmd + alt + l` → Insert pretty log
-- `cmd + alt + shift + l` → Insert full log
+- `cmd + cmd + l` → Insert pretty log
+- `cmd + cmd + shift + l` → Insert full log
 
 Note: These shortcuts may conflict with other extensions or OS bindings. If they do, change them in  
 `Preferences -> Keyboard Shortcuts`.
