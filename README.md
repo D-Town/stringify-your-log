@@ -1,10 +1,11 @@
 # Stringify Your Log
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/YOUR_PUBLISHER.vscode-pretty-log-js-ts)](https://marketplace.visualstudio.com/items?itemName=YOUR_PUBLISHER.vscode-pretty-log-js-ts)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/YOUR_PUBLISHER.vscode-pretty-log-js-ts)](https://marketplace.visualstudio.com/items?itemName=YOUR_PUBLISHER.vscode-pretty-log-js-ts)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/YOUR_PUBLISHER.vscode-pretty-log-js-ts)](https://marketplace.visualstudio.com/items?itemName=YOUR_PUBLISHER.vscode-pretty-log-js-ts)
-[![Build Status](https://github.com/D-Town/vscode-pretty-log-js-ts/actions/workflows/test.yml/badge.svg)](https://github.com/D-Town/vscode-pretty-log-js-ts/actions)
-[![License](https://img.shields.io/github/license/D-Town/vscode-pretty-log-js-ts)](LICENSE)
+[![Version](https://img.shields.io/visual-studio-marketplace/v/dtown.stringify-your-log?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=dtown.stringify-your-log)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/dtown.stringify-your-log?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=dtown.stringify-your-log)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/dtown.stringify-your-log?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=dtown.stringify-your-log)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/D-Town/stringify-your-log/test.yml?branch=main&style=flat-square)](https://github.com/D-Town/stringify-your-log/actions)
+[![License](https://img.shields.io/github/license/D-Town/stringify-your-log?style=flat-square)](LICENSE)
+
 
 
 A VS Code extension for JavaScript and TypeScript that inserts readable debug logs fast.
