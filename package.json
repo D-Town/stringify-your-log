@@ -2,7 +2,7 @@
   "name": "stringify-your-log",
   "displayName": "Stringify Your Log",
   "description": "Insert pretty debug logs for JavaScript/TypeScript (JSON.stringify or console.dir) with smart placement after blocks.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "dtown",
   "license": "MIT",
   "repository": {
