@@ -12,11 +12,31 @@ A VS Code extension for JavaScript and TypeScript that inserts readable debug lo
 
 This extension is designed for backend workflows where you want predictable output in the terminal and the VS Code debug console.
 
+## Quick Start
+
+### Hotkeys
+
+- macOS: `Option + Command + L` -> Insert pretty log (short)
+- macOS: `Option + Command + Shift + L` -> Insert pretty log (full)
+- Windows/Linux: `Ctrl + Alt + L` -> Insert pretty log (short)
+- Windows/Linux: `Ctrl + Alt + Shift + L` -> Insert pretty log (full)
+
+### Completion Shortcuts
+
+Type one of these in JS/TS files and pick the completion item:
+
+- `stringify`
+- `slog` (short)
+- `slogf` (full)
+
+Note: Completion mode inserts `VALUE_TO_LOG` as a placeholder when no variable is selected.
+
 ## Features
 
 - Insert a pretty log for the selected variable or expression
-- Optional “Full” log variant with header and footer markers
+- Short and Full variants with clear start/end markers
 - Predictable placement: inserts the log directly in the next line
+- Context-aware headers with source line and source file
 - Output modes:
   - `JSON.stringify(..., null, 2)` for copyable, pretty JSON
   - `console.dir(..., { depth, colors })` for Node-style inspection (supports colored output depending on terminal/debug console)
@@ -31,21 +51,29 @@ This extension is designed for backend workflows where you want predictable outp
 - **Stringify Your Log: Insert pretty log (Full)**  
   Command ID: `stringify-your-log.logJsonFull`
 
-### Default Keybindings (macOS)
+### Default Keybindings
 
-- `cmd + cmd + l` → Insert pretty log
-- `cmd + cmd + shift + l` → Insert full log
+- macOS: `Option + Command + L` -> Insert pretty log
+- macOS: `Option + Command + Shift + L` -> Insert full log
+- Windows/Linux: `Ctrl + Alt + L` -> Insert pretty log
+- Windows/Linux: `Ctrl + Alt + Shift + L` -> Insert full log
 
 Note: These shortcuts may conflict with other extensions or OS bindings. If they do, change them in  
 `Preferences -> Keyboard Shortcuts`.
 
 ### How the variable is chosen
 
-The extension uses the first available option:
+Hotkey commands use this order:
 
 1. Selected text (preferred)
 2. The word under the cursor (identifier)
 3. A prompt asking for a variable or expression
+
+Completion commands (`stringify`, `slog`, `slogf`) use this order:
+
+1. Selected text (preferred)
+2. The word under the cursor (identifier)
+3. `VALUE_TO_LOG` placeholder
 
 Examples of valid expressions:
 
@@ -61,15 +89,16 @@ Examples of valid expressions:
 Short:
 
 ```js
+console.log("Log from line 49 in file src/services/user.ts");
 console.log(JSON.stringify(foo, null, 2));
-````
+```
 
 Full:
 
 ```js
-console.log(`🚀 Log for: ${foo}`);
+console.log("🚀 Log from line 49 in file src/services/user.ts");
 console.log(JSON.stringify(foo, null, 2));
-console.log('🔚');
+console.log("🔚 End log from line 49 in file src/services/user.ts");
 ```
 
 ### Mode: dir (Node/terminal oriented)
@@ -77,15 +106,16 @@ console.log('🔚');
 Short:
 
 ```js
+console.log("Log from line 49 in file src/services/user.ts");
 console.dir(foo, { depth: null, colors: true });
 ```
 
 Full:
 
 ```js
-console.log(`🚀 Log for: ${foo}`);
+console.log("🚀 Log from line 49 in file src/services/user.ts");
 console.dir(foo, { depth: null, colors: true });
-console.log('🔚');
+console.log("🔚 End log from line 49 in file src/services/user.ts");
 ```
 
 ## Settings

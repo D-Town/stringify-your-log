@@ -37,7 +37,12 @@
     "Other"
   ],
   "icon": "icon.png",
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
+  ],
   "badges": [
     {
       "url": "https://img.shields.io/github/v/release/D-Town/stringify-your-log",
@@ -65,12 +70,14 @@
     "keybindings": [
       {
         "command": "stringify-your-log.logJson",
-        "key": "cmd+alt+l",
+        "key": "ctrl+alt+l",
+        "mac": "cmd+alt+l",
         "when": "editorTextFocus && (editorLangId == javascript || editorLangId == typescript || editorLangId == javascriptreact || editorLangId == typescriptreact)"
       },
       {
         "command": "stringify-your-log.logJsonFull",
-        "key": "cmd+alt+shift+l",
+        "key": "ctrl+alt+shift+l",
+        "mac": "cmd+alt+shift+l",
         "when": "editorTextFocus && (editorLangId == javascript || editorLangId == typescript || editorLangId == javascriptreact || editorLangId == typescriptreact)"
       }
     ],
