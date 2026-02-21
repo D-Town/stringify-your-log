@@ -40,7 +40,7 @@ function buildLogText(
       return [
         `console.log("🚀 Log from line ${sourceLine} in file ${sourceFile}");`,
         `console.dir(${variable}, ${dirOptions});`,
-        "console.log('🔚');"
+        `console.log("🔚 End log from line ${sourceLine} in file ${sourceFile}");`
       ].join("\n");
     }
 
@@ -54,7 +54,7 @@ function buildLogText(
     return [
       `console.log("🚀 Log from line ${sourceLine} in file ${sourceFile}");`,
       `console.log(JSON.stringify(${variable}, null, 2));`,
-      "console.log('🔚');"
+      `console.log("🔚 End log from line ${sourceLine} in file ${sourceFile}");`
     ].join("\n");
   }
 
@@ -89,15 +89,17 @@ function getInsertionPlan(doc: vscode.TextDocument, cursorPos: vscode.Position, 
   };
 }
 
-async function insertPrettyLog(editor: vscode.TextEditor, full: boolean) {
+async function insertPrettyLog(editor: vscode.TextEditor, full: boolean, usePlaceholderFallback = false) {
   const { outputMode, dirDepth, dirColors } = getConfig();
 
-  const variable =
-    getSelectedOrWord(editor) ??
-    (await vscode.window.showInputBox({
-      prompt: "Variable or expression to log",
-      placeHolder: "e.g. user, payload.items, response.data"
-    }))?.trim();
+  const selectedOrWord = getSelectedOrWord(editor);
+  const variable = selectedOrWord ??
+    (usePlaceholderFallback
+      ? "VALUE_TO_LOG"
+      : (await vscode.window.showInputBox({
+        prompt: "Variable or expression to log",
+        placeHolder: "e.g. user, payload.items, response.data"
+      }))?.trim());
 
   if (!variable) { return; }
 
@@ -116,14 +118,19 @@ async function insertPrettyLog(editor: vscode.TextEditor, full: boolean) {
 
 function createStringifyCompletionItem(
   label: string,
-  commandId: "stringify-your-log.logJson" | "stringify-your-log.logJsonFull",
-  range: vscode.Range
+  commandId:
+    | "stringify-your-log.logJson"
+    | "stringify-your-log.logJsonFull"
+    | "stringify-your-log.logJsonCompletion"
+    | "stringify-your-log.logJsonFullCompletion",
+  range: vscode.Range,
+  sortText: string
 ) {
   const item = new vscode.CompletionItem(label, vscode.CompletionItemKind.Snippet);
   item.insertText = "";
   item.range = range;
-  item.filterText = "stringify";
-  item.sortText = label.includes("short") ? "0001" : "0002";
+  item.filterText = "stringify slog slogf";
+  item.sortText = sortText;
   item.detail = "Stringify Your Log";
   item.command = { command: commandId, title: label };
   return item;
@@ -142,6 +149,18 @@ export function activate(context: vscode.ExtensionContext) {
     await insertPrettyLog(editor, true);
   });
 
+  const logJsonCompletionCommand = vscode.commands.registerCommand("stringify-your-log.logJsonCompletion", async () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) { return; }
+    await insertPrettyLog(editor, false, true);
+  });
+
+  const logJsonFullCompletionCommand = vscode.commands.registerCommand("stringify-your-log.logJsonFullCompletion", async () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) { return; }
+    await insertPrettyLog(editor, true, true);
+  });
+
   const completionProvider = vscode.languages.registerCompletionItemProvider(
     [
       { language: "javascript", scheme: "file" },
@@ -155,17 +174,33 @@ export function activate(context: vscode.ExtensionContext) {
         if (!wordRange) { return undefined; }
 
         const typedText = document.getText(wordRange).toLowerCase();
-        if (!"stringify".startsWith(typedText) || typedText.length === 0) { return undefined; }
+        if (typedText.length === 0) { return undefined; }
+
+        const triggerShort = "slog";
+        const triggerFull = "slogf";
+        const triggerDefault = "stringify";
+        const isMatch =
+          triggerDefault.startsWith(typedText) ||
+          triggerShort.startsWith(typedText) ||
+          triggerFull.startsWith(typedText);
+
+        if (!isMatch) { return undefined; }
 
         return [
-          createStringifyCompletionItem("Stringify short", "stringify-your-log.logJson", wordRange),
-          createStringifyCompletionItem("Stringify full", "stringify-your-log.logJsonFull", wordRange)
+          createStringifyCompletionItem("Stringify short (slog)", "stringify-your-log.logJsonCompletion", wordRange, typedText.startsWith(triggerFull) ? "0002" : "0001"),
+          createStringifyCompletionItem("Stringify full (slogf)", "stringify-your-log.logJsonFullCompletion", wordRange, typedText.startsWith(triggerFull) ? "0001" : "0002")
         ];
       }
     }
   );
 
-  context.subscriptions.push(logJsonCommand, logJsonFullCommand, completionProvider);
+  context.subscriptions.push(
+    logJsonCommand,
+    logJsonFullCommand,
+    logJsonCompletionCommand,
+    logJsonFullCompletionCommand,
+    completionProvider
+  );
 }
 
 export function deactivate() { }
