@@ -22,30 +22,54 @@ function getSelectedOrWord(editor: vscode.TextEditor): string | null {
   return word || null;
 }
 
-function buildLogText(variable: string, full: boolean, mode: OutputMode, dirDepth: number | null, dirColors: boolean): string {
+function buildLogText(
+  variable: string,
+  full: boolean,
+  mode: OutputMode,
+  dirDepth: number | null,
+  dirColors: boolean,
+  sourceLine: number,
+  sourceFile: string
+): string {
+  const header = `console.log("Log from line ${sourceLine} in file ${sourceFile}");`;
+
   if (mode === "dir") {
     const dirOptions = `{ depth: ${dirDepth === null ? "null" : dirDepth}, colors: ${dirColors ? "true" : "false"} }`;
 
     if (full) {
       return [
-        `console.log(\`🚀 Log for: \${${variable}}\`);`,
+        `console.log("🚀 Log from line ${sourceLine} in file ${sourceFile}");`,
         `console.dir(${variable}, ${dirOptions});`,
         "console.log('🔚');"
       ].join("\n");
     }
 
-    return `console.dir(${variable}, ${dirOptions});`;
+    return [
+      header,
+      `console.dir(${variable}, ${dirOptions});`
+    ].join("\n");
   }
 
   if (full) {
     return [
-      `console.log(\`🚀 Log for: \${${variable}}\`);`,
+      `console.log("🚀 Log from line ${sourceLine} in file ${sourceFile}");`,
       `console.log(JSON.stringify(${variable}, null, 2));`,
       "console.log('🔚');"
     ].join("\n");
   }
 
-  return `console.log(JSON.stringify(${variable}, null, 2));`;
+  return [
+    header,
+    `console.log(JSON.stringify(${variable}, null, 2));`
+  ].join("\n");
+}
+
+function getSourceFileLabel(doc: vscode.TextDocument): string {
+  const rawPath = vscode.workspace.asRelativePath(doc.uri, false);
+  const normalizedPath = rawPath.replace(/\\/g, "/");
+  const parts = normalizedPath.split("/").filter(Boolean);
+  if (parts.length === 0) { return normalizedPath || "unknown-file"; }
+  return parts.slice(-3).join("/");
 }
 
 function getInsertionPlan(doc: vscode.TextDocument, cursorPos: vscode.Position, logText: string) {
@@ -79,8 +103,10 @@ async function insertPrettyLog(editor: vscode.TextEditor, full: boolean) {
 
   const doc = editor.document;
   const cursorPos = editor.selection.active;
+  const sourceLine = cursorPos.line + 1;
+  const sourceFile = getSourceFileLabel(doc);
 
-  const logText = buildLogText(variable, full, outputMode, dirDepth, dirColors);
+  const logText = buildLogText(variable, full, outputMode, dirDepth, dirColors, sourceLine, sourceFile);
   const { position, text } = getInsertionPlan(doc, cursorPos, logText);
 
   await editor.edit((editBuilder) => {
