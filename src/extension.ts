@@ -114,22 +114,58 @@ async function insertPrettyLog(editor: vscode.TextEditor, full: boolean) {
   });
 }
 
+function createStringifyCompletionItem(
+  label: string,
+  commandId: "stringify-your-log.logJson" | "stringify-your-log.logJsonFull",
+  range: vscode.Range
+) {
+  const item = new vscode.CompletionItem(label, vscode.CompletionItemKind.Snippet);
+  item.insertText = "";
+  item.range = range;
+  item.filterText = "stringify";
+  item.sortText = label.includes("short") ? "0001" : "0002";
+  item.detail = "Stringify Your Log";
+  item.command = { command: commandId, title: label };
+  return item;
+}
+
 export function activate(context: vscode.ExtensionContext) {
-  context.subscriptions.push(
-    vscode.commands.registerCommand("stringify-your-log.logJson", async () => {
-      const editor = vscode.window.activeTextEditor;
-      if (!editor) { return; }
-      await insertPrettyLog(editor, false);
-    })
+  const logJsonCommand = vscode.commands.registerCommand("stringify-your-log.logJson", async () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) { return; }
+    await insertPrettyLog(editor, false);
+  });
+
+  const logJsonFullCommand = vscode.commands.registerCommand("stringify-your-log.logJsonFull", async () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) { return; }
+    await insertPrettyLog(editor, true);
+  });
+
+  const completionProvider = vscode.languages.registerCompletionItemProvider(
+    [
+      { language: "javascript", scheme: "file" },
+      { language: "typescript", scheme: "file" },
+      { language: "javascriptreact", scheme: "file" },
+      { language: "typescriptreact", scheme: "file" }
+    ],
+    {
+      provideCompletionItems(document, position) {
+        const wordRange = document.getWordRangeAtPosition(position);
+        if (!wordRange) { return undefined; }
+
+        const typedText = document.getText(wordRange).toLowerCase();
+        if (!"stringify".startsWith(typedText) || typedText.length === 0) { return undefined; }
+
+        return [
+          createStringifyCompletionItem("Stringify short", "stringify-your-log.logJson", wordRange),
+          createStringifyCompletionItem("Stringify full", "stringify-your-log.logJsonFull", wordRange)
+        ];
+      }
+    }
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("stringify-your-log.logJsonFull", async () => {
-      const editor = vscode.window.activeTextEditor;
-      if (!editor) { return; }
-      await insertPrettyLog(editor, true);
-    })
-  );
+  context.subscriptions.push(logJsonCommand, logJsonFullCommand, completionProvider);
 }
 
 export function deactivate() { }
