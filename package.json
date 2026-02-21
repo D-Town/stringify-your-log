@@ -1,7 +1,7 @@
 {
   "name": "stringify-your-log",
   "displayName": "Stringify Your Log",
-  "description": "Insert pretty debug logs for JavaScript/TypeScript (JSON.stringify or console.dir) with smart placement after blocks.",
+  "description": "Insert pretty debug logs for JavaScript/TypeScript (JSON.stringify or console.dir) in the next line.",
   "version": "1.0.2",
   "publisher": "dtown",
   "license": "MIT",
@@ -98,11 +98,6 @@
           "type": "boolean",
           "default": true,
           "description": "Enable colors for console.dir output (Node/terminal dependent)."
-        },
-        "stringifyYourLog.smartPlacement": {
-          "type": "boolean",
-          "default": true,
-          "description": "Try to insert the log after the enclosing block (e.g., after a map/forEach callback block) instead of at the cursor."
         }
       }
     }

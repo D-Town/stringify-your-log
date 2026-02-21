@@ -16,7 +16,7 @@ This extension is designed for backend workflows where you want predictable outp
 
 - Insert a pretty log for the selected variable or expression
 - Optional “Full” log variant with header and footer markers
-- Smart placement: inserts the log after the enclosing block (useful inside `map`, `forEach`, `if`, `try`, etc.)
+- Predictable placement: inserts the log directly in the next line
 - Output modes:
   - `JSON.stringify(..., null, 2)` for copyable, pretty JSON
   - `console.dir(..., { depth, colors })` for Node-style inspection (supports colored output depending on terminal/debug console)
@@ -137,31 +137,6 @@ Example:
 }
 ```
 
-### `stringifyYourLog.smartPlacement`
-
-When enabled, the extension tries to insert logs after the current enclosing block instead of at the cursor position.
-This is especially useful when your cursor is inside a callback block:
-
-```js
-const foo = bar.map(x => {
-  // many lines
-  // cursor somewhere here
-});
-```
-
-With smart placement enabled, the log will be inserted after the block.
-
-* `true` (default)
-* `false`
-
-Example:
-
-```json
-{
-  "stringifyYourLog.smartPlacement": true
-}
-```
-
 ## Notes on colored output
 
 `console.dir(..., { colors: true })` is a Node feature. Whether colors appear depends on your environment:
@@ -175,7 +150,7 @@ Browser devtools are not a target for this extension.
 
 For Node.js / backend development, this configuration is recommended.
 
-It enables `console.dir` with colors, unlimited depth, and smart placement after blocks.
+It enables `console.dir` with colors and unlimited depth.
 
 Add the following to your **VS Code `settings.json`**:
 
@@ -183,8 +158,7 @@ Add the following to your **VS Code `settings.json`**:
 {
   "stringifyYourLog.outputMode": "dir",
   "stringifyYourLog.dirColors": true,
-  "stringifyYourLog.dirDepth": null,
-  "stringifyYourLog.smartPlacement": true
+  "stringifyYourLog.dirDepth": null
 }
 ```
 
@@ -199,7 +173,3 @@ Add the following to your **VS Code `settings.json`**:
 
 * **dirDepth: `null`**
   Prints the full object tree with unlimited depth.
-
-* **smartPlacement: `true`**
-  Inserts logs *after* the current enclosing block (for example after `map`, `forEach`, `if`, `try` blocks) instead of inside them.
-
